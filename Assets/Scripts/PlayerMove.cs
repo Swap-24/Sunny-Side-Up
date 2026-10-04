@@ -3,15 +3,80 @@ using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
+    public static PlayerMove Instance { get; private set; }
+
     [SerializeField] private float moveSpeed = 5f;
+
+    [Header("Movement State")]
+    [SerializeField] private bool isMovementFrozen = false;
+
+    public bool IsMovementFrozen
+    {
+        get => isMovementFrozen;
+        set => isMovementFrozen = value;
+    }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
+    public void FreezeMovement()
+    {
+        isMovementFrozen = true;
+    }
+
+    public void UnfreezeMovement()
+    {
+        isMovementFrozen = false;
+    }
+
+    public void SetMovementFrozen(bool freeze)
+    {
+        isMovementFrozen = freeze;
+    }
+
+    public bool CanMove()
+    {
+        if (isMovementFrozen)
+            return false;
+
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive)
+            return false;
+
+        if (JournalManager.Instance != null && JournalManager.Instance.IsJournalOpen)
+            return false;
+
+        if (SleepManager.Instance != null && SleepManager.Instance.IsSleeping)
+            return false;
+
+        if (FadeManager.Instance != null && FadeManager.Instance.IsFading)
+            return false;
+
+        return true;
+    }
 
     void Update()
     {
-        if (DialogueManager.Instance != null &&
-        DialogueManager.Instance.IsDialogueActive)
+        if (!CanMove())
         {
             return;
         }
+
         if (Keyboard.current == null)
         {
             return;
@@ -44,7 +109,4 @@ public class PlayerMove : MonoBehaviour
 
         transform.position += movement * moveSpeed * Time.deltaTime;
     }
-
-
-    
 }

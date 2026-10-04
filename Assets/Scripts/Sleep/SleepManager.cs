@@ -10,6 +10,8 @@ public class SleepManager : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] private DialogueData notSleepyDialogue;
 
+    public bool IsSleeping { get; private set; }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -21,17 +23,37 @@ public class SleepManager : MonoBehaviour
         Instance = this;
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     public void TrySleep()
     {
         if (!canSleep)
         {
-            DialogueManager.Instance.StartDialogue(notSleepyDialogue);
+            if (DialogueManager.Instance != null)
+            {
+                DialogueManager.Instance.StartDialogue(notSleepyDialogue);
+            }
             return;
         }
 
-        StartCoroutine(
-            FadeManager.Instance.FadeToBlack(2f, AfterSleep)
-        );
+        IsSleeping = true;
+
+        if (FadeManager.Instance != null)
+        {
+            StartCoroutine(
+                FadeManager.Instance.FadeToBlack(2f, AfterSleep)
+            );
+        }
+        else
+        {
+            AfterSleep();
+        }
     }
 
     private void AfterSleep()
@@ -43,8 +65,13 @@ public class SleepManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        yield return StartCoroutine(
-            FadeManager.Instance.FadeFromBlack(2f)
-        );
+        if (FadeManager.Instance != null)
+        {
+            yield return StartCoroutine(
+                FadeManager.Instance.FadeFromBlack(2f)
+            );
+        }
+
+        IsSleeping = false;
     }
 }

@@ -14,11 +14,12 @@ public class InteractionDetector : MonoBehaviour
         {
             CurrentInteractable = interactable;
 
-            interactionUI.Show(
-                interactable.GetInteractionText()
-            );
+            interactionUI.Show(other.transform);
 
-            Debug.Log("Interactable detected: " + other.gameObject.name);
+            Debug.Log(
+                "Interactable detected: " +
+                other.gameObject.name
+            );
         }
     }
 
@@ -26,7 +27,8 @@ public class InteractionDetector : MonoBehaviour
     {
         IInteractable interactable = other.GetComponent<IInteractable>();
 
-        if (interactable != null && CurrentInteractable == interactable)
+        if (interactable != null &&
+            CurrentInteractable == interactable)
         {
             CurrentInteractable = null;
 
@@ -35,4 +37,13 @@ public class InteractionDetector : MonoBehaviour
             Debug.Log("Left interaction range");
         }
     }
+    public void RefreshInteractionUI()
+{
+    if (CurrentInteractable == null)
+        return;
+
+    interactionUI.Show(
+        ((MonoBehaviour)CurrentInteractable).transform
+    );
+}
 }

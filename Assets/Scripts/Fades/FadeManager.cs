@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.InputSystem;
 using System;
 
 public class FadeManager : MonoBehaviour
@@ -9,6 +8,8 @@ public class FadeManager : MonoBehaviour
     public static FadeManager Instance { get; private set; }
 
     [SerializeField] private Image fadeImage;
+
+    public bool IsFading { get; private set; }
 
     private void Awake()
     {
@@ -20,55 +21,79 @@ public class FadeManager : MonoBehaviour
 
         Instance = this;
     }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     private void Start()
-{
-    StartCoroutine(FadeFromBlack(2f));
-}
+    {
+        if (fadeImage != null)
+        {
+            StartCoroutine(FadeFromBlack(2f));
+        }
+    }
 
     public IEnumerator FadeToBlack(float duration, Action onComplete = null)
     {
-        Color color = fadeImage.color;
-        color.a = 0f;
-        fadeImage.color = color;
+        IsFading = true;
 
-        float timer = 0f;
-
-        while (timer < duration)
+        if (fadeImage != null)
         {
-            timer += Time.deltaTime;
-
-            color.a = Mathf.Lerp(0f, 1f, timer / duration);
+            Color color = fadeImage.color;
+            color.a = 0f;
             fadeImage.color = color;
 
-            yield return null;
+            float timer = 0f;
+
+            while (timer < duration)
+            {
+                timer += Time.deltaTime;
+
+                color.a = Mathf.Lerp(0f, 1f, timer / duration);
+                fadeImage.color = color;
+
+                yield return null;
+            }
+
+            color.a = 1f;
+            fadeImage.color = color;
         }
 
-        color.a = 1f;
-        fadeImage.color = color;
         onComplete?.Invoke();
     }
+
     public IEnumerator FadeFromBlack(float duration, Action onComplete = null)
-{
-    Color color = fadeImage.color;
-    color.a = 1f;
-    fadeImage.color = color;
-
-    float timer = 0f;
-
-    while (timer < duration)
     {
-        timer += Time.deltaTime;
+        IsFading = true;
 
-        color.a = Mathf.Lerp(1f, 0f, timer / duration);
-        fadeImage.color = color;
+        if (fadeImage != null)
+        {
+            Color color = fadeImage.color;
+            color.a = 1f;
+            fadeImage.color = color;
 
-        yield return null;
+            float timer = 0f;
+
+            while (timer < duration)
+            {
+                timer += Time.deltaTime;
+
+                color.a = Mathf.Lerp(1f, 0f, timer / duration);
+                fadeImage.color = color;
+
+                yield return null;
+            }
+
+            color.a = 0f;
+            fadeImage.color = color;
+        }
+
+        IsFading = false;
+        onComplete?.Invoke();
     }
-
-    color.a = 0f;
-    fadeImage.color = color;
-
-    onComplete?.Invoke();
-}
- 
 }

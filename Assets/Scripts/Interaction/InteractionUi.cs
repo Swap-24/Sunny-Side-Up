@@ -1,23 +1,55 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
 public class InteractionUI : MonoBehaviour
 {
-    [SerializeField] private GameObject interactionTextObject;
-    [SerializeField] private TMP_Text interactionText;
+    [SerializeField] private GameObject interactionPrompt;
+    [SerializeField] private Image promptImage;
 
-    public void Show(string text)
+    [Header("Position")]
+    [SerializeField] private Vector3 worldOffset = new Vector3(0f, 1.5f, 0f);
+
+    private Transform target;
+
+    private void Update()
     {
-        Debug.Log("SHOWING UI: " + text);
+        if (target == null || !interactionPrompt.activeSelf)
+            return;
 
-        interactionText.text = text;
-        interactionTextObject.SetActive(true);
+        Vector3 worldPosition = target.position + worldOffset;
+
+        Vector3 screenPosition =
+            Camera.main.WorldToScreenPoint(worldPosition);
+
+        interactionPrompt.transform.position = screenPosition;
+    }
+
+    public void Show(Transform interactableTransform)
+    {
+        target = interactableTransform;
+
+        interactionPrompt.SetActive(true);
+
+        UpdatePromptPosition();
     }
 
     public void Hide()
     {
-        Debug.Log("HIDING UI");
+        target = null;
 
-        interactionTextObject.SetActive(false);
+        interactionPrompt.SetActive(false);
+    }
+
+    private void UpdatePromptPosition()
+    {
+        if (target == null)
+            return;
+
+        Vector3 worldPosition = target.position + worldOffset;
+
+        Vector3 screenPosition =
+            Camera.main.WorldToScreenPoint(worldPosition);
+
+        interactionPrompt.transform.position = screenPosition;
     }
 }

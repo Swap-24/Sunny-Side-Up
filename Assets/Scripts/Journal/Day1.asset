@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15f948e7be3e3ac4a884ed2b15a105cb, type: 3}
+  m_Name: Day1
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: Day 1
+  pages:
+  - "Ok, this time, I promise I wont quit writing this diary! I know this is like the 5th time I\u2019m starting over, but this is also going to be the last time!!! I know its hard to believe, but this time, I\u2019ve got a reason to keep writing. Liv told me that she writes diaries yesterday. That means she\u2019s going to like me more if I start writing too right? Dad told me it only takes 21 days to build a habit. Just you wait, I wont miss a single entry in the next 20 days. "
+  - "And guess what? Liv said we should share our lunches everyday. Apparently her mom works till late and can\u2019t make her lunch, so she packs her own lunch herself! Isnt that so cool? So I told her I\u2019ll start packing my own lunch too, so we could share. I\u2019ve never seen her so happy before.\n\nI asked why her father did not help with lunch, but she never mention him herself. so I though it might be rude to ask.\n"
+  - 'I have to wake up an hour earlier every morning now to make lunch. Mom even lets me go to the market to buy stuff. This feels like a new chapter of my life.
+
+
+    I cant wait!!!!!HOLY MOLY!!'

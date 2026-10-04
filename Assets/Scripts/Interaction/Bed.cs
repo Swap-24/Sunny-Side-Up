@@ -4,7 +4,7 @@ public class Bed : MonoBehaviour, IInteractable
 {
     public string GetInteractionText()
     {
-        return "E - Sleep";
+        return "[E] - Sleep";
     }
 
     public bool CanInteract()
