@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13960142723afc84491937b34fb3fd7e, type: 3}
   m_Name: ClockSpecial
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
-  lines: []
+  lines:
+  - speaker: Sol
+    text: The grandfather clock from our old house.
+    textSpeed: 30
+  - speaker: Sol
+    text: Don't know why they decided  to put it in my room
+    textSpeed: 30

@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
   lines:
   - speaker: Sol
-    text: These plants are not really. Apparently they are made of plastic.
+    text: These plants are not real. Apparently they are made of plastic.
     textSpeed: 30
   - speaker: Sol
     text: Mom said that it's nice to have some greenery in my room.
     textSpeed: 30
   - speaker: Sol
-    text: But what's the point if it's not real?
+    text: But what's the point if ithey're not real?
     textSpeed: 30

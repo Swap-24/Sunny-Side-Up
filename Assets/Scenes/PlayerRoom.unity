@@ -282,7 +282,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: f89f30dd54746e2478f362432589ee9f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.649
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -4449,6 +4449,10 @@ MonoBehaviour:
   nextButton: {fileID: 925547992}
   audioSource: {fileID: 433600876}
   pageFlipSound: {fileID: 8300000, guid: 64d98c5b32af73a45a9fa17b3718d7c8, type: 3}
+  openDuration: 0.22
+  closeDuration: 0.16
+  startScale: 0.3
+  useFade: 1
 --- !u!82 &433600876
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6266,6 +6270,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 255488900}
   speakerText: {fileID: 847336494}
   dialogueText: {fileID: 566769404}
+  audioSource: {fileID: 0}
 --- !u!1 &847336492
 GameObject:
   m_ObjectHideFlags: 0
@@ -6552,6 +6557,8 @@ GameObject:
   m_Component:
   - component: {fileID: 866143211}
   - component: {fileID: 866143210}
+  - component: {fileID: 866143213}
+  - component: {fileID: 866143212}
   m_Layer: 0
   m_Name: tiles and items_16
   m_TagString: Untagged
@@ -6634,6 +6641,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 37915802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &866143212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866143209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
+  interactionDialogue: {fileID: 11400000, guid: 24ce4caf5c68e524c8a79575bbe5270b, type: 2}
+  specialFirstDialogue: 0
+  specialDialogue: {fileID: 0}
+  interactionPrompt: '[E] - Inspect'
+  uniqueID: 
+--- !u!61 &866143213
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866143209}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.059970677, y: -0.80975676}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.6923077, y: 0.9230769}
+    newSize: {x: 0.6923077, y: 0.9230769}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.021727, y: 1.724102}
+  m_EdgeRadius: 0
 --- !u!1 &890043104
 GameObject:
   m_ObjectHideFlags: 0
@@ -6645,6 +6715,7 @@ GameObject:
   - component: {fileID: 890043107}
   - component: {fileID: 890043106}
   - component: {fileID: 890043105}
+  - component: {fileID: 890043108}
   m_Layer: 0
   m_Name: furniture03_31
   m_TagString: Untagged
@@ -6773,6 +6844,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 37915802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &890043108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890043104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
+  interactionDialogue: {fileID: 11400000, guid: 3a11d49427309d54281ce73b98654290, type: 2}
+  specialFirstDialogue: 0
+  specialDialogue: {fileID: 0}
+  interactionPrompt: '[E] - Inspect'
+  uniqueID: 
 --- !u!1 &925547992
 GameObject:
   m_ObjectHideFlags: 0
@@ -7329,6 +7417,7 @@ GameObject:
   m_Component:
   - component: {fileID: 957709784}
   - component: {fileID: 957709785}
+  - component: {fileID: 957709786}
   m_Layer: 0
   m_Name: chaircollider
   m_TagString: Untagged
@@ -7397,6 +7486,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.2728372, y: 1.0372047}
   m_EdgeRadius: 0
+--- !u!114 &957709786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957709783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
+  interactionDialogue: {fileID: 11400000, guid: 8c969acabd0bce941ab255cf9a6a242a, type: 2}
+  specialFirstDialogue: 0
+  specialDialogue: {fileID: 0}
+  interactionPrompt: '[E] - Inspect'
+  uniqueID: 
 --- !u!1 &1010401100
 GameObject:
   m_ObjectHideFlags: 0
@@ -7426,7 +7532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6e6f88584830e47acf6d68aff62b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SleepManager
-  canSleep: 0
+  canSleep: 1
   notSleepyDialogue: {fileID: 11400000, guid: abd4913e61077fc46a9ed2e1b23d9588, type: 2}
 --- !u!4 &1010401102
 Transform:
@@ -8067,6 +8173,7 @@ GameObject:
   - component: {fileID: 1237924741}
   - component: {fileID: 1237924740}
   - component: {fileID: 1237924739}
+  - component: {fileID: 1237924742}
   m_Layer: 0
   m_Name: furniture03_19
   m_TagString: Untagged
@@ -8195,6 +8302,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 37915802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1237924742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237924738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
+  interactionDialogue: {fileID: 11400000, guid: 38e3032c544e5cd49be800470243dd4a, type: 2}
+  specialFirstDialogue: 1
+  specialDialogue: {fileID: 11400000, guid: 11cc4f4c181f45e49a565624ce49e062, type: 2}
+  interactionPrompt: '[E] - Inspect'
+  uniqueID: 
 --- !u!1 &1271603771
 GameObject:
   m_ObjectHideFlags: 0
@@ -8645,7 +8769,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 100, y: 119}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1419500483
 MonoBehaviour:
@@ -10170,7 +10294,7 @@ Transform:
   m_GameObject: {fileID: 2053969873}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7089555, w: 0.7052532}
-  m_LocalPosition: {x: 6.18, y: 2.79, z: 0}
+  m_LocalPosition: {x: 6.18, y: 2.09, z: 0}
   m_LocalScale: {x: 1, y: 1.22, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10339,6 +10463,7 @@ GameObject:
   - component: {fileID: 2098885237}
   - component: {fileID: 2098885239}
   - component: {fileID: 2098885238}
+  - component: {fileID: 2098885240}
   m_Layer: 0
   m_Name: clock
   m_TagString: Untagged
@@ -10391,7 +10516,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -10467,6 +10592,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &2098885240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098885236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
+  interactionDialogue: {fileID: 11400000, guid: 7a778c8df86c2054681b911d402d0772, type: 2}
+  specialFirstDialogue: 1
+  specialDialogue: {fileID: 11400000, guid: ee25f403da4f32343b2225208f2b06a5, type: 2}
+  interactionPrompt: '[E] - Inspect'
+  uniqueID: 
 --- !u!1001 &3716059655142607549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10479,6 +10621,10 @@ PrefabInstance:
       propertyPath: interactionUI
       value: 
       objectReference: {fileID: 277388342}
+    - target: {fileID: 1234567890123456789, guid: 283dd56be2b46744095f79b0b24b24b8, type: 3}
+      propertyPath: volume
+      value: 0.129
+      objectReference: {fileID: 0}
     - target: {fileID: 2585276257314431916, guid: 283dd56be2b46744095f79b0b24b24b8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.69

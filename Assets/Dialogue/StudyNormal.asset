@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13960142723afc84491937b34fb3fd7e, type: 3}
   m_Name: StudyNormal
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
-  lines: []
+  lines:
+  - speaker: Sol
+    text: I will ABSOLUTELY NOT study right now.
+    textSpeed: 30
