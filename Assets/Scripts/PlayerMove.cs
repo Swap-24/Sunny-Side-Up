@@ -10,6 +10,9 @@ public class PlayerMove : MonoBehaviour
     [Header("Movement State")]
     [SerializeField] private bool isMovementFrozen = false;
 
+    [Header("Facing Direction")]
+    [SerializeField] private Vector2 facingDirection = Vector2.down;
+
     private Animator animator;
 
     public bool IsMovementFrozen
@@ -17,6 +20,8 @@ public class PlayerMove : MonoBehaviour
         get => isMovementFrozen;
         set => isMovementFrozen = value;
     }
+
+    public Vector2 FacingDirection => facingDirection;
 
     private void Awake()
     {
@@ -32,7 +37,7 @@ public class PlayerMove : MonoBehaviour
 
         if (animator == null)
         {
-            Debug.LogError("PlayerMove could not find an Animator on Sol.");
+            Debug.LogWarning("PlayerMove could not find an Animator on player.");
         }
     }
 
@@ -53,7 +58,7 @@ public class PlayerMove : MonoBehaviour
     {
         string targetSpawn = GameState.Instance != null ? GameState.Instance.TargetSpawnPoint : null;
 
-        SpawnPoint[] spawnPoints = FindObjectsByType<SpawnPoint>();
+        SpawnPoint[] spawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
             return;
@@ -92,7 +97,7 @@ public class PlayerMove : MonoBehaviour
             transform.position = chosenSpawn.transform.position;
 
             // Snap camera immediately to avoid camera sliding across the room on load
-            CameraFollow cam = FindAnyObjectByType<CameraFollow>();
+            CameraFollow cam = FindFirstObjectByType<CameraFollow>();
             if (cam != null && cam.player == transform)
             {
                 cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
@@ -149,7 +154,10 @@ public class PlayerMove : MonoBehaviour
         // Player cannot move right now
         if (!CanMove())
         {
-            animator.SetBool("IsMoving", false);
+            if (animator != null)
+            {
+                animator.SetBool("IsMoving", false);
+            }
             return;
         }
 
@@ -186,7 +194,10 @@ public class PlayerMove : MonoBehaviour
         bool isMoving = movement != Vector3.zero;
 
         // Tell Animator whether we're walking
-        animator.SetBool("IsMoving", isMoving);
+        if (animator != null)
+        {
+            animator.SetBool("IsMoving", isMoving);
+        }
 
         // Only change facing direction while moving
         if (isMoving)
@@ -195,13 +206,17 @@ public class PlayerMove : MonoBehaviour
             // one of the four directional animations.
             if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
             {
-                animator.SetFloat("MoveX", Mathf.Sign(horizontal));
-                animator.SetFloat("MoveY", 0f);
+                facingDirection = new Vector2(Mathf.Sign(horizontal), 0f);
             }
             else
             {
-                animator.SetFloat("MoveX", 0f);
-                animator.SetFloat("MoveY", Mathf.Sign(vertical));
+                facingDirection = new Vector2(0f, Mathf.Sign(vertical));
+            }
+
+            if (animator != null)
+            {
+                animator.SetFloat("MoveX", facingDirection.x);
+                animator.SetFloat("MoveY", facingDirection.y);
             }
         }
     }
