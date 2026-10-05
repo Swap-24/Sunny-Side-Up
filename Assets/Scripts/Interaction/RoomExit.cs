@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class RoomExit : MonoBehaviour, IPlayerTrigger
 {
@@ -12,19 +14,59 @@ public class RoomExit : MonoBehaviour, IPlayerTrigger
     [Header("Blocked Dialogue")]
     [SerializeField] private DialogueData blockedDialogue;
 
+    [Header("Transition Settings")]
+    [SerializeField] private float fadeDuration = 1f;
+
+    private bool isTransitioning = false;
+
     public void OnPlayerEnter()
     {
-        if (requiresJournal && !GameState.Instance.HasReadJournal)
+        if (isTransitioning)
+            return;
+
+        if (requiresJournal && (GameState.Instance == null || !GameState.Instance.HasReadJournal))
         {
-            DialogueManager.Instance.StartDialogue(blockedDialogue);
+            if (DialogueManager.Instance != null && blockedDialogue != null)
+            {
+                DialogueManager.Instance.StartDialogue(blockedDialogue);
+            }
             return;
         }
 
-        Debug.Log(
-            "Leaving room. Destination: " +
-            destinationScene +
-            " | Spawn Point: " +
-            destinationSpawnPoint
-        );
+        StartCoroutine(TransitionRoutine());
+    }
+
+    private IEnumerator TransitionRoutine()
+    {
+        isTransitioning = true;
+
+        if (PlayerMove.Instance != null)
+        {
+            PlayerMove.Instance.FreezeMovement();
+        }
+
+        if (GameState.Instance != null)
+        {
+            GameState.Instance.SetTargetSpawnPoint(destinationSpawnPoint);
+        }
+
+        if (FadeManager.Instance != null)
+        {
+            yield return StartCoroutine(FadeManager.Instance.FadeToBlack(fadeDuration));
+        }
+
+        if (!string.IsNullOrEmpty(destinationScene))
+        {
+            SceneManager.LoadScene(destinationScene);
+        }
+        else
+        {
+            Debug.LogWarning("RoomExit: Destination scene name is empty!");
+            isTransitioning = false;
+            if (PlayerMove.Instance != null)
+            {
+                PlayerMove.Instance.UnfreezeMovement();
+            }
+        }
     }
 }

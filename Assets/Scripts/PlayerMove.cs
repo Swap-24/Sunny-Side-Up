@@ -27,11 +27,72 @@ public class PlayerMove : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        PositionPlayerAtSpawnPoint();
+    }
+
     private void OnDestroy()
     {
         if (Instance == this)
         {
             Instance = null;
+        }
+    }
+
+    private void PositionPlayerAtSpawnPoint()
+    {
+        string targetSpawn = GameState.Instance != null ? GameState.Instance.TargetSpawnPoint : null;
+
+        SpawnPoint[] spawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            return;
+        }
+
+        SpawnPoint chosenSpawn = null;
+
+        if (!string.IsNullOrEmpty(targetSpawn))
+        {
+            foreach (var sp in spawnPoints)
+            {
+                if (sp != null && !string.IsNullOrEmpty(sp.SpawnPointID) &&
+                    sp.SpawnPointID.Trim().Equals(targetSpawn.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                {
+                    chosenSpawn = sp;
+                    break;
+                }
+            }
+        }
+
+        // If no matching ID found, check for a default spawn point
+        if (chosenSpawn == null)
+        {
+            foreach (var sp in spawnPoints)
+            {
+                if (sp != null && sp.IsDefaultSpawn)
+                {
+                    chosenSpawn = sp;
+                    break;
+                }
+            }
+        }
+
+        if (chosenSpawn != null)
+        {
+            transform.position = chosenSpawn.transform.position;
+
+            // Snap camera immediately to avoid camera sliding across the room on load
+            CameraFollow cam = FindFirstObjectByType<CameraFollow>();
+            if (cam != null && cam.player == transform)
+            {
+                cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
+            }
+        }
+
+        if (GameState.Instance != null)
+        {
+            GameState.Instance.ClearTargetSpawnPoint();
         }
     }
 
