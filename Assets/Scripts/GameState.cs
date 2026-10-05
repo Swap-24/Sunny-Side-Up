@@ -10,7 +10,7 @@ public class GameState : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = FindFirstObjectByType<GameState>();
+                instance = FindAnyObjectByType<GameState>();
 
                 if (instance == null)
                 {
