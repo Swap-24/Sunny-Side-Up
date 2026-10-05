@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +12,9 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TMP_Text speakerText;
     [SerializeField] private TMP_Text dialogueText;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+
     public bool IsDialogueActive { get; private set; }
 
     private DialogueData currentDialogue;
@@ -19,6 +24,24 @@ public class DialogueManager : MonoBehaviour
 
     private bool isTyping;
     private bool skipTyping;
+
+    private static readonly Dictionary<string, CharacterVoice> registeredVoices = new(StringComparer.OrdinalIgnoreCase);
+
+    public static void RegisterVoice(string name, CharacterVoice voice)
+    {
+        if (!string.IsNullOrEmpty(name) && voice != null)
+        {
+            registeredVoices[name] = voice;
+        }
+    }
+
+    public static void UnregisterVoice(string name, CharacterVoice voice)
+    {
+        if (!string.IsNullOrEmpty(name) && registeredVoices.TryGetValue(name, out var current) && current == voice)
+        {
+            registeredVoices.Remove(name);
+        }
+    }
 
     private void Awake()
     {
@@ -30,7 +53,44 @@ public class DialogueManager : MonoBehaviour
 
         Instance = this;
 
-        dialoguePanel.SetActive(false);
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(false);
+        }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
+        audioSource.playOnAwake = false;
+    }
+
+    private CharacterVoice GetVoiceForSpeaker(string speakerName)
+    {
+        if (string.IsNullOrEmpty(speakerName))
+            return null;
+
+        if (registeredVoices.TryGetValue(speakerName, out var registered) && registered != null)
+        {
+            return registered;
+        }
+
+        // Fallback search in scene
+        CharacterVoice[] allVoices = FindObjectsByType<CharacterVoice>();
+        foreach (var v in allVoices)
+        {
+            if (v != null && string.Equals(v.CharacterName, speakerName, StringComparison.OrdinalIgnoreCase))
+            {
+                registeredVoices[speakerName] = v;
+                return v;
+            }
+        }
+
+        return null;
     }
 
     public void StartDialogue(DialogueData dialogue)
@@ -42,7 +102,10 @@ public class DialogueManager : MonoBehaviour
         currentLineIndex = 0;
 
         IsDialogueActive = true;
-        dialoguePanel.SetActive(true);
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(true);
+        }
 
         ShowCurrentLine();
     }
@@ -67,6 +130,11 @@ public class DialogueManager : MonoBehaviour
         isTyping = true;
         skipTyping = false;
 
+        CharacterVoice speakerVoice = GetVoiceForSpeaker(line.speaker);
+        AudioClip voiceClip = speakerVoice != null ? speakerVoice.Voice : null;
+        float pitch = speakerVoice != null ? speakerVoice.Pitch : 1f;
+        float volume = speakerVoice != null ? speakerVoice.Volume : 1f;
+
         if (line.textSpeed <= 0)
         {
             dialogueText.text = line.text;
@@ -85,6 +153,13 @@ public class DialogueManager : MonoBehaviour
             }
 
             dialogueText.text += character;
+
+            // Play voice sound on letters
+            if (char.IsLetter(character) && voiceClip != null && audioSource != null)
+            {
+                audioSource.pitch = pitch;
+                audioSource.PlayOneShot(voiceClip, volume);
+            }
 
             yield return new WaitForSeconds(delay);
         }
@@ -127,7 +202,10 @@ public class DialogueManager : MonoBehaviour
 
         IsDialogueActive = false;
 
-        dialoguePanel.SetActive(false);
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(false);
+        }
 
         currentDialogue = null;
         currentLineIndex = 0;
@@ -137,10 +215,10 @@ public class DialogueManager : MonoBehaviour
     }
 
     private void OnDestroy()
-{
-    if (Instance == this)
     {
-        Instance = null;
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
-}
 }

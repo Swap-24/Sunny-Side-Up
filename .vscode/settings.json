@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Sunny-Side-Up.slnx"
+    "dotnet.defaultSolution": "Sunny Side Up.slnx"
 }

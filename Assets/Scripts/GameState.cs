@@ -63,4 +63,19 @@ public class GameState : MonoBehaviour
     {
         TargetSpawnPoint = null;
     }
+
+    private readonly System.Collections.Generic.HashSet<string> interactedObjectIDs = new();
+
+    public bool HasInteractedWith(string id)
+    {
+        return !string.IsNullOrEmpty(id) && interactedObjectIDs.Contains(id);
+    }
+
+    public void RecordInteraction(string id)
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            interactedObjectIDs.Add(id);
+        }
+    }
 }

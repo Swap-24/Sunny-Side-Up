@@ -10,9 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13960142723afc84491937b34fb3fd7e, type: 3}
-  m_Name: NewDialogue
+  m_Name: ClockNormal
   m_EditorClassIdentifier: Assembly-CSharp::DialogueData
-  lines:
-  - speaker: Sol
-    text: I'm not very tired
-    textSpeed: 20
+  lines: []
