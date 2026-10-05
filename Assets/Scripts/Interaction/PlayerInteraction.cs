@@ -6,10 +6,22 @@ public class PlayerInteraction : MonoBehaviour
     private InteractionDetector detector;
     private InteractionUI interactionUI;
 
+    private InteractionUI UI
+    {
+        get
+        {
+            if (interactionUI == null)
+            {
+                interactionUI = InteractionUI.Instance != null ? InteractionUI.Instance : FindFirstObjectByType<InteractionUI>();
+            }
+            return interactionUI;
+        }
+    }
+
     private void Awake()
     {
         detector = GetComponentInChildren<InteractionDetector>();
-        interactionUI = FindAnyObjectByType<InteractionUI>();
+        interactionUI = FindFirstObjectByType<InteractionUI>();
     }
 
     private void Update()
@@ -65,9 +77,9 @@ public class PlayerInteraction : MonoBehaviour
                 if (interactable.CanInteract())
                 {
                     // Hide prompt while the interaction is happening
-                    if (interactionUI != null)
+                    if (UI != null)
                     {
-                        interactionUI.Hide();
+                        UI.Hide();
                     }
 
                     // Perform interaction

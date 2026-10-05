@@ -10,7 +10,31 @@ public class JournalUi : MonoBehaviour
     [SerializeField] private GameObject previousButton;
     [SerializeField] private GameObject nextButton;
     [SerializeField] private AudioSource audioSource;
-[SerializeField] private AudioClip pageFlipSound;
+    [SerializeField] private AudioClip pageFlipSound;
+
+    private void Awake()
+    {
+        if (JournalManager.Instance != null)
+        {
+            JournalManager.Instance.RegisterUi(this);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (JournalManager.Instance != null)
+        {
+            JournalManager.Instance.RegisterUi(this);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (JournalManager.Instance != null)
+        {
+            JournalManager.Instance.UnregisterUi(this);
+        }
+    }
 
     public void Open(JournalEntry entry)
     {
@@ -20,94 +44,117 @@ public class JournalUi : MonoBehaviour
             return;
         }
 
-        journalPanel.SetActive(true);
+        if (journalPanel != null)
+        {
+            journalPanel.SetActive(true);
+        }
 
-        journalTitle.text = entry.title;
-        journalText.text = entry.pages[0];
+        if (journalTitle != null)
+        {
+            journalTitle.text = entry.title;
+        }
+
+        if (journalText != null && entry.pages != null && entry.pages.Count > 0)
+        {
+            journalText.text = entry.pages[0];
+        }
 
         UpdateButtons();
     }
 
     public void Close()
     {
-        journalPanel.SetActive(false);
+        if (journalPanel != null)
+        {
+            journalPanel.SetActive(false);
+        }
     }
 
     public void DisplayPage(string text)
     {
-        journalText.text = text;
+        if (journalText != null)
+        {
+            journalText.text = text;
+        }
     }
 
-public void NextPage()
-{
-    JournalManager.Instance.NextPage();
-
-    if (audioSource != null && pageFlipSound != null)
+    public void NextPage()
     {
-        audioSource.PlayOneShot(pageFlipSound);
+        if (JournalManager.Instance == null)
+            return;
+
+        JournalManager.Instance.NextPage();
+
+        if (audioSource != null && pageFlipSound != null)
+        {
+            audioSource.PlayOneShot(pageFlipSound);
+        }
+
+        UpdatePage();
     }
 
-    UpdatePage();
-}
-
-public void PreviousPage()
-{
-    JournalManager.Instance.PreviousPage();
-
-    if (audioSource != null && pageFlipSound != null)
+    public void PreviousPage()
     {
-        audioSource.PlayOneShot(pageFlipSound);
-    }
+        if (JournalManager.Instance == null)
+            return;
 
-    UpdatePage();
-}
+        JournalManager.Instance.PreviousPage();
+
+        if (audioSource != null && pageFlipSound != null)
+        {
+            audioSource.PlayOneShot(pageFlipSound);
+        }
+
+        UpdatePage();
+    }
 
     private void UpdatePage()
     {
-        JournalEntry entry = JournalManager.Instance.CurrentJournalEntry;
+        if (JournalManager.Instance == null)
+            return;
 
+        JournalEntry entry = JournalManager.Instance.CurrentJournalEntry;
         if (entry == null)
             return;
 
         int page = JournalManager.Instance.CurrentPage;
 
-        // Update the title too.
-        // This is important when moving from Day 1 to Day 2.
-        journalTitle.text = entry.title;
+        if (journalTitle != null)
+        {
+            journalTitle.text = entry.title;
+        }
 
-        journalText.text = entry.pages[page];
+        if (journalText != null && entry.pages != null && page >= 0 && page < entry.pages.Count)
+        {
+            journalText.text = entry.pages[page];
+        }
 
         UpdateButtons();
     }
 
     private void UpdateButtons()
     {
-        JournalEntry entry = JournalManager.Instance.CurrentJournalEntry;
+        if (JournalManager.Instance == null)
+            return;
 
+        JournalEntry entry = JournalManager.Instance.CurrentJournalEntry;
         if (entry == null || entry.pages == null || entry.pages.Count == 0)
             return;
 
         int currentPage = JournalManager.Instance.CurrentPage;
         int lastPage = entry.pages.Count - 1;
 
-        // Show Previous if:
-        // - We are not on the first page
-        // OR
-        // - There is a previous journal entry
-        bool canGoPrevious =
-            currentPage > 0 ||
-            JournalManager.Instance.CurrentEntryIndex > 0;
+        bool canGoPrevious = currentPage > 0 || JournalManager.Instance.CurrentEntryIndex > 0;
+        bool canGoNext = currentPage < lastPage || JournalManager.Instance.CurrentEntryIndex < JournalManager.Instance.JournalEntryCount - 1;
 
-        // Show Next if:
-        // - We are not on the last page
-        // OR
-        // - There is another journal entry
-        bool canGoNext =
-            currentPage < lastPage ||
-            JournalManager.Instance.CurrentEntryIndex <
-            JournalManager.Instance.JournalEntryCount - 1;
+        if (previousButton != null)
+        {
+            previousButton.SetActive(canGoPrevious);
+        }
 
-        previousButton.SetActive(canGoPrevious);
-        nextButton.SetActive(canGoNext);
+        if (nextButton != null)
+        {
+            nextButton.SetActive(canGoNext);
+        }
     }
 }

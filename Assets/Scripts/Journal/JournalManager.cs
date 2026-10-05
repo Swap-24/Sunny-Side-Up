@@ -13,6 +13,18 @@ public class JournalManager : MonoBehaviour
     private int currentEntryIndex;
     private int currentPage;
 
+    public JournalUi UI
+    {
+        get
+        {
+            if (journalUi == null)
+            {
+                journalUi = FindFirstObjectByType<JournalUi>(FindObjectsInactive.Include);
+            }
+            return journalUi;
+        }
+    }
+
     public JournalEntry CurrentJournalEntry
     {
         get
@@ -20,28 +32,37 @@ public class JournalManager : MonoBehaviour
             if (journalEntries == null || journalEntries.Count == 0)
                 return null;
 
+            if (currentEntryIndex < 0 || currentEntryIndex >= journalEntries.Count)
+                currentEntryIndex = 0;
+
             return journalEntries[currentEntryIndex];
         }
     }
 
     public int CurrentPage => currentPage;
-
     public int CurrentEntryIndex => currentEntryIndex;
-
     public int JournalEntryCount => journalEntries != null ? journalEntries.Count : 0;
-
     public bool IsJournalOpen { get; private set; }
 
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
+            // If another JournalManager was already persisted, update its references with the current scene's references
+            if (journalUi != null)
+            {
+                Instance.journalUi = journalUi;
+            }
+            if (journalEntries != null && journalEntries.Count > 0)
+            {
+                Instance.journalEntries = journalEntries;
+            }
+
             Destroy(gameObject);
             return;
         }
 
         Instance = this;
-
         DontDestroyOnLoad(gameObject);
     }
 
@@ -53,6 +74,19 @@ public class JournalManager : MonoBehaviour
         }
     }
 
+    public void RegisterUi(JournalUi ui)
+    {
+        journalUi = ui;
+    }
+
+    public void UnregisterUi(JournalUi ui)
+    {
+        if (journalUi == ui)
+        {
+            journalUi = null;
+        }
+    }
+
     public void OpenJournal()
     {
         if (journalEntries == null || journalEntries.Count == 0)
@@ -61,31 +95,34 @@ public class JournalManager : MonoBehaviour
             return;
         }
 
+        JournalUi ui = UI;
+        if (ui == null)
+        {
+            Debug.LogWarning("JournalUi not found in the current scene.");
+            return;
+        }
+
         currentEntryIndex = 0;
         currentPage = 0;
 
         IsJournalOpen = true;
-
-        if (journalUi != null)
-        {
-            journalUi.Open(CurrentJournalEntry);
-        }
+        ui.Open(CurrentJournalEntry);
     }
 
     public void CloseJournal()
     {
         IsJournalOpen = false;
 
-        if (journalUi != null)
+        JournalUi ui = UI;
+        if (ui != null)
         {
-            journalUi.Close();
+            ui.Close();
         }
     }
 
     public void NextPage()
     {
         JournalEntry entry = CurrentJournalEntry;
-
         if (entry == null)
             return;
 
@@ -131,7 +168,6 @@ public class JournalManager : MonoBehaviour
             currentEntryIndex--;
 
             JournalEntry previousEntry = CurrentJournalEntry;
-
             if (previousEntry != null && previousEntry.pages != null)
             {
                 currentPage = previousEntry.pages.Count - 1;

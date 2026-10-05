@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class InteractionUI : MonoBehaviour
 {
+    public static InteractionUI Instance { get; private set; }
+
     [SerializeField] private GameObject interactionPrompt;
     [SerializeField] private Image promptImage;
 
@@ -11,44 +13,64 @@ public class InteractionUI : MonoBehaviour
 
     private Transform target;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     private void Update()
     {
-        if (target == null || !interactionPrompt.activeSelf)
+        if (target == null || interactionPrompt == null || !interactionPrompt.activeSelf)
             return;
 
-        Vector3 worldPosition = target.position + worldOffset;
-
-        Vector3 screenPosition =
-            Camera.main.WorldToScreenPoint(worldPosition);
-
-        interactionPrompt.transform.position = screenPosition;
+        UpdatePromptPosition();
     }
 
     public void Show(Transform interactableTransform)
     {
+        if (interactableTransform == null)
+            return;
+
         target = interactableTransform;
 
-        interactionPrompt.SetActive(true);
-
-        UpdatePromptPosition();
+        if (interactionPrompt != null)
+        {
+            interactionPrompt.SetActive(true);
+            UpdatePromptPosition();
+        }
     }
 
     public void Hide()
     {
         target = null;
 
-        interactionPrompt.SetActive(false);
+        if (interactionPrompt != null)
+        {
+            interactionPrompt.SetActive(false);
+        }
     }
 
     private void UpdatePromptPosition()
     {
-        if (target == null)
+        if (target == null || interactionPrompt == null || Camera.main == null)
             return;
 
         Vector3 worldPosition = target.position + worldOffset;
-
-        Vector3 screenPosition =
-            Camera.main.WorldToScreenPoint(worldPosition);
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
 
         interactionPrompt.transform.position = screenPosition;
     }

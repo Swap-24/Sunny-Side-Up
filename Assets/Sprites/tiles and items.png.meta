@@ -178,8 +178,8 @@ TextureImporter:
       name: tiles and items_1
       rect:
         serializedVersion: 2
-        x: 96
-        y: 136
+        x: 104
+        y: 152
         width: 96
         height: 48
       alignment: 0
@@ -557,7 +557,7 @@ TextureImporter:
         width: 15
         height: 9
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -566,6 +566,72 @@ TextureImporter:
       bones: []
       spriteID: defd5f1036467a443b0e566250e9c5e4
       internalID: -87077992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiles and items_19
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 136
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6aed800fd2bb197419926524b9bb4346
+      internalID: -800935067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiles and items_20
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 136
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.42877054, y: 0.55539894}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8355ce1124fae344ea75b1ad411429bb
+      internalID: -1573067199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiles and items_21
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 136
+        width: 16
+        height: 16
+      alignment: 9
+      pivot: {x: 0.42877054, y: 0.55539894}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd3a8a5060087d540ab021060ef87b32
+      internalID: 1145241993
       vertices: []
       indices: 
       edges: []
@@ -584,7 +650,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":66.0,"y":61.0},"gridSpriteOffset":{"x":12.0,"y":13.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       tiles and items_0: 1443340119172600610
       tiles and items_1: -1592004610727356339
@@ -597,6 +663,7 @@ TextureImporter:
       tiles and items_16: -1888284147454591192
       tiles and items_17: -2782235304910512558
       tiles and items_18: -87077992
+      tiles and items_19: -800935067
       tiles and items_2: 7599242381519683127
       tiles and items_20: -1573067199
       tiles and items_21: 1145241993
