@@ -9,7 +9,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Awake()
     {
         detector = GetComponentInChildren<InteractionDetector>();
-        interactionUI = FindFirstObjectByType<InteractionUI>();
+        interactionUI = FindAnyObjectByType<InteractionUI>();
     }
 
     private void Update()
