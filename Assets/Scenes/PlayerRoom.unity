@@ -4304,6 +4304,101 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1001 &431305707
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 902732168768378102, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516376354544020761, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.14075015
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516376354544020761, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.029624863
+      objectReference: {fileID: 0}
+    - target: {fileID: 4990687527302426406, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_Name
+      value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.670542
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.9163043
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886886367426060824, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5691203996084852484, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4990687527302426406, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 431305709}
+  m_SourcePrefab: {fileID: 100100000, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+--- !u!1 &431305708 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4990687527302426406, guid: e0e842e7b32251b44a1a3aaf8dbba38d, type: 3}
+  m_PrefabInstance: {fileID: 431305707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &431305709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431305708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4eb173c7766e243be186946dcc8403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCConversation
+  initialConversation: {fileID: 11400000, guid: 8b1f2a3c4d5e6f7a8b9c0d1e2f3a4b5c, type: 2}
+  repeatableConversation: {fileID: 11400000, guid: 7c2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a, type: 2}
+  repeatableDialogue: {fileID: 0}
+  promptText: '[E] - Talk'
+  uniqueID: 
 --- !u!1 &432682936
 GameObject:
   m_ObjectHideFlags: 0
@@ -6271,7 +6366,12 @@ MonoBehaviour:
   dialoguePanel: {fileID: 255488900}
   speakerText: {fileID: 847336494}
   dialogueText: {fileID: 566769404}
+  continuePrompt: {fileID: 0}
+  defaultSpeakerProfile: {fileID: 0}
   audioSource: {fileID: 0}
+  commaPause: 0.12
+  endSentencePause: 0.28
+  ellipsisPause: 0.45
 --- !u!114 &840189422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6675,10 +6775,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   dialogue: {fileID: 11400000, guid: 24ce4caf5c68e524c8a79575bbe5270b, type: 2}
-  specialFirstDialogue: 0
-  specialDialogue: {fileID: 0}
   interactionPrompt: '[E] - Inspect'
   uniqueID: 
+  hasInteracted: 0
 --- !u!61 &866143213
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6878,10 +6977,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   dialogue: {fileID: 11400000, guid: 3a11d49427309d54281ce73b98654290, type: 2}
-  specialFirstDialogue: 0
-  specialDialogue: {fileID: 0}
   interactionPrompt: '[E] - Inspect'
   uniqueID: 
+  hasInteracted: 0
 --- !u!1 &925547992
 GameObject:
   m_ObjectHideFlags: 0
@@ -7520,10 +7618,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   dialogue: {fileID: 11400000, guid: 8c969acabd0bce941ab255cf9a6a242a, type: 2}
-  specialFirstDialogue: 0
-  specialDialogue: {fileID: 0}
   interactionPrompt: '[E] - Inspect'
   uniqueID: 
+  hasInteracted: 0
 --- !u!1 &1010401100
 GameObject:
   m_ObjectHideFlags: 0
@@ -8336,10 +8433,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   dialogue: {fileID: 11400000, guid: 38e3032c544e5cd49be800470243dd4a, type: 2}
-  specialFirstDialogue: 1
-  specialDialogue: {fileID: 11400000, guid: 11cc4f4c181f45e49a565624ce49e062, type: 2}
   interactionPrompt: '[E] - Inspect'
   uniqueID: 
+  hasInteracted: 0
 --- !u!1 &1271603771
 GameObject:
   m_ObjectHideFlags: 0
@@ -10626,10 +10722,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   dialogue: {fileID: 11400000, guid: 7a778c8df86c2054681b911d402d0772, type: 2}
-  specialFirstDialogue: 1
-  specialDialogue: {fileID: 11400000, guid: ee25f403da4f32343b2225208f2b06a5, type: 2}
   interactionPrompt: '[E] - Inspect'
   uniqueID: 
+  hasInteracted: 0
 --- !u!1001 &3716059655142607549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10694,7 +10789,8 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 15
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1234567890123456789, guid: 283dd56be2b46744095f79b0b24b24b8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -10797,3 +10893,4 @@ SceneRoots:
   - {fileID: 399471012}
   - {fileID: 273565476}
   - {fileID: 1993727338}
+  - {fileID: 431305707}

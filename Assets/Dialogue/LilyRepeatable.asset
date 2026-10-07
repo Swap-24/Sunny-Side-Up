@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40fed2f3d463ab942b910b2a0fac28b3, type: 3}
   m_Name: LilyRepeatable
   m_EditorClassIdentifier: Assembly-CSharp::ConversationData
+  conversationTitle: Test Conversation
   lines:
   - speakerProfile: {fileID: 11400000, guid: 5a8e12d47c9f43b18d20e7a13c981120, type: 2}
     speaker: Lily
@@ -19,4 +20,3 @@ MonoBehaviour:
     textSpeed: 0
     voiceOverride: {fileID: 0}
     pitchOverride: 0
-

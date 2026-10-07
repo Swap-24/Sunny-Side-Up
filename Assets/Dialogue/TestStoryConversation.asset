@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40fed2f3d463ab942b910b2a0fac28b3, type: 3}
   m_Name: TestStoryConversation
   m_EditorClassIdentifier: Assembly-CSharp::ConversationData
+  conversationTitle: Test Convo
   lines:
   - speakerProfile: {fileID: 11400000, guid: 9685b786191c2974d93b969cc65d2bdf, type: 2}
     speaker: Sol
@@ -37,4 +38,3 @@ MonoBehaviour:
     textSpeed: 0
     voiceOverride: {fileID: 0}
     pitchOverride: 0
-
