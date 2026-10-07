@@ -134,6 +134,10 @@ public class PlayerMove : MonoBehaviour
             DialogueManager.Instance.IsDialogueActive)
             return false;
 
+        if (ConversationManager.Instance != null &&
+            ConversationManager.Instance.IsConversationActive)
+            return false;
+
         if (JournalManager.Instance != null &&
             JournalManager.Instance.IsJournalOpen)
             return false;

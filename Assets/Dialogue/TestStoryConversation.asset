@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40fed2f3d463ab942b910b2a0fac28b3, type: 3}
+  m_Name: TestStoryConversation
+  m_EditorClassIdentifier: Assembly-CSharp::ConversationData
+  lines:
+  - speakerProfile: {fileID: 11400000, guid: 9685b786191c2974d93b969cc65d2bdf, type: 2}
+    speaker: Sol
+    text: Hey! Who are you?
+    textSpeed: 0
+    voiceOverride: {fileID: 0}
+    pitchOverride: 0
+  - speakerProfile: {fileID: 11400000, guid: 5a8e12d47c9f43b18d20e7a13c981120, type: 2}
+    speaker: Lily
+    text: Hi Sol! I'm Lily. Just testing out the new conversation system!
+    textSpeed: 0
+    voiceOverride: {fileID: 0}
+    pitchOverride: 0
+  - speakerProfile: {fileID: 11400000, guid: 9685b786191c2974d93b969cc65d2bdf, type: 2}
+    speaker: Sol
+    text: Nice! Notice how each speaker gets their own name, color, and voice pitch!
+    textSpeed: 0
+    voiceOverride: {fileID: 0}
+    pitchOverride: 0
+  - speakerProfile: {fileID: 11400000, guid: 5a8e12d47c9f43b18d20e7a13c981120, type: 2}
+    speaker: Lily
+    text: Exactly! And once we finish, interacting again will say a repeatable line instead.
+    textSpeed: 0
+    voiceOverride: {fileID: 0}
+    pitchOverride: 0
+

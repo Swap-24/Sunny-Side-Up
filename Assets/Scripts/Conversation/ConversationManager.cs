@@ -5,21 +5,17 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-public class DialogueManager : MonoBehaviour
+public class ConversationManager : MonoBehaviour
 {
-    public static DialogueManager Instance { get; private set; }
+    public static ConversationManager Instance { get; private set; }
 
     [Header("UI References")]
-    [SerializeField] private GameObject dialoguePanel;
+    [SerializeField] private GameObject conversationPanel;
     [SerializeField] private TMP_Text speakerText;
     [SerializeField] private TMP_Text dialogueText;
 
-    [Tooltip("Optional continue indicator prompt (e.g. arrow or [E] icon) shown when typing finishes.")]
+    [Tooltip("Optional continue indicator prompt (e.g. arrow icon) shown when typing finishes.")]
     [SerializeField] private GameObject continuePrompt;
-
-    [Header("Default Speaker (Sol)")]
-    [Tooltip("Default speaker profile used when none is specified (Sol).")]
-    [SerializeField] private SpeakerProfile defaultSpeakerProfile;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -29,32 +25,15 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private float endSentencePause = 0.28f;
     [SerializeField] private float ellipsisPause = 0.45f;
 
-    public bool IsDialogueActive { get; private set; }
+    public bool IsConversationActive { get; private set; }
 
-    private List<DialogueLine> currentLines;
+    private ConversationData currentConversation;
     private int currentLineIndex;
+    private Action onConversationComplete;
 
     private Coroutine typingCoroutine;
     private bool isTyping;
     private bool skipTyping;
-
-    private static readonly Dictionary<string, CharacterVoice> registeredVoices = new(StringComparer.OrdinalIgnoreCase);
-
-    public static void RegisterVoice(string name, CharacterVoice voice)
-    {
-        if (!string.IsNullOrEmpty(name) && voice != null)
-        {
-            registeredVoices[name] = voice;
-        }
-    }
-
-    public static void UnregisterVoice(string name, CharacterVoice voice)
-    {
-        if (!string.IsNullOrEmpty(name) && registeredVoices.TryGetValue(name, out var current) && current == voice)
-        {
-            registeredVoices.Remove(name);
-        }
-    }
 
     private void Awake()
     {
@@ -66,9 +45,9 @@ public class DialogueManager : MonoBehaviour
 
         Instance = this;
 
-        if (dialoguePanel != null)
+        if (conversationPanel != null)
         {
-            dialoguePanel.SetActive(false);
+            conversationPanel.SetActive(false);
         }
 
         if (continuePrompt != null)
@@ -85,35 +64,21 @@ public class DialogueManager : MonoBehaviour
             }
         }
         audioSource.playOnAwake = false;
-
-        // Try to locate Sol profile if not set in inspector
-        if (defaultSpeakerProfile == null)
-        {
-            defaultSpeakerProfile = Resources.Load<SpeakerProfile>("SpeakerProfile/Sol");
-        }
     }
 
-    public void StartDialogue(InteractionDialogue dialogue, bool isFirstTime = false)
+    public void StartConversation(ConversationData conversation, Action onComplete = null)
     {
-        if (dialogue == null)
+        if (conversation == null || conversation.lines.Count == 0)
             return;
 
-        List<DialogueLine> lines = dialogue.GetLines(isFirstTime);
-        StartDialogue(lines);
-    }
-
-    public void StartDialogue(List<DialogueLine> lines)
-    {
-        if (lines == null || lines.Count == 0)
-            return;
-
-        currentLines = lines;
+        currentConversation = conversation;
         currentLineIndex = 0;
+        onConversationComplete = onComplete;
 
-        IsDialogueActive = true;
-        if (dialoguePanel != null)
+        IsConversationActive = true;
+        if (conversationPanel != null)
         {
-            dialoguePanel.SetActive(true);
+            conversationPanel.SetActive(true);
         }
 
         ShowCurrentLine();
@@ -121,36 +86,18 @@ public class DialogueManager : MonoBehaviour
 
     private void ShowCurrentLine()
     {
-        if (currentLines == null || currentLineIndex >= currentLines.Count)
-        {
-            CloseDialogue();
-            return;
-        }
-
         if (continuePrompt != null)
         {
             continuePrompt.SetActive(false);
         }
 
-        DialogueLine line = currentLines[currentLineIndex];
+        ConversationLine line = currentConversation.lines[currentLineIndex];
 
-        // Speaker Name and Color
-        string speakerName = line.SpeakerName;
-        Color speakerColor = line.SpeakerColor;
-
-        if (line.Profile == null && defaultSpeakerProfile != null)
-        {
-            if (string.IsNullOrEmpty(line.speaker) || line.speaker == "Sol")
-            {
-                speakerName = defaultSpeakerProfile.SpeakerName;
-                speakerColor = defaultSpeakerProfile.NameColor;
-            }
-        }
-
+        // Update speaker name & color
         if (speakerText != null)
         {
-            speakerText.text = speakerName;
-            speakerText.color = speakerColor;
+            speakerText.text = line.SpeakerName;
+            speakerText.color = line.SpeakerColor;
         }
 
         if (dialogueText != null)
@@ -166,45 +113,19 @@ public class DialogueManager : MonoBehaviour
         typingCoroutine = StartCoroutine(TypeLine(line));
     }
 
-    private IEnumerator TypeLine(DialogueLine line)
+    private IEnumerator TypeLine(ConversationLine line)
     {
         isTyping = true;
         skipTyping = false;
 
         string fullText = line.text ?? "";
         float speed = line.EffectiveSpeed;
-        if (line.Profile == null && defaultSpeakerProfile != null && line.textSpeed <= 0f)
-        {
-            speed = defaultSpeakerProfile.DefaultTextSpeed;
-        }
         float baseDelay = speed > 0 ? (1f / speed) : 0.03f;
 
-        // Determine voice clip and audio properties
         AudioClip clipToPlay = line.VoiceClip;
         float basePitch = line.BasePitch;
         float pitchVariance = line.PitchVariance;
         float volume = line.Volume;
-
-        // Fallback to default speaker profile (Sol)
-        if (clipToPlay == null && defaultSpeakerProfile != null)
-        {
-            clipToPlay = defaultSpeakerProfile.VoiceSound;
-            basePitch = defaultSpeakerProfile.VoicePitch;
-            pitchVariance = defaultSpeakerProfile.PitchVariance;
-            volume = defaultSpeakerProfile.VoiceVolume;
-        }
-
-        // Fallback to CharacterVoice in scene if still null
-        if (clipToPlay == null)
-        {
-            CharacterVoice sceneVoice = GetSceneVoice(line.SpeakerName);
-            if (sceneVoice != null)
-            {
-                clipToPlay = sceneVoice.Voice;
-                basePitch = sceneVoice.Pitch;
-                volume = sceneVoice.Volume;
-            }
-        }
 
         StringBuilder displayedText = new StringBuilder();
         int i = 0;
@@ -219,7 +140,7 @@ public class DialogueManager : MonoBehaviour
 
             char c = fullText[i];
 
-            // Handle Rich Text Tags (e.g. <color=#FF0000> or <b>) without typing letter-by-letter
+            // Rich Text Tag handling (instantly skips and renders tags like <color=...> or <b>)
             if (c == '<')
             {
                 int closeTagIndex = fullText.IndexOf('>', i);
@@ -236,7 +157,7 @@ public class DialogueManager : MonoBehaviour
             displayedText.Append(c);
             dialogueText.text = displayedText.ToString();
 
-            // Play voice sound on letters/numbers
+            // Play voice blip sound on letters
             if (char.IsLetterOrDigit(c) && clipToPlay != null && audioSource != null)
             {
                 float randomizedPitch = basePitch + UnityEngine.Random.Range(-pitchVariance, pitchVariance);
@@ -249,7 +170,6 @@ public class DialogueManager : MonoBehaviour
 
             if (i < fullText.Length - 1 && !char.IsWhiteSpace(fullText[i]))
             {
-                // Ellipsis check: "..."
                 if (c == '.' && i + 2 < fullText.Length && fullText[i + 1] == '.' && fullText[i + 2] == '.')
                 {
                     displayedText.Append("..");
@@ -282,29 +202,27 @@ public class DialogueManager : MonoBehaviour
 
     public void HandleInput()
     {
-        if (!IsDialogueActive)
+        if (!IsConversationActive)
             return;
 
-        // If text is still typing, pressing E finishes the line instantly
         if (isTyping)
         {
             skipTyping = true;
             return;
         }
 
-        // Advance to next line or close dialogue
-        if (currentLines != null && currentLineIndex < currentLines.Count - 1)
+        if (currentLineIndex < currentConversation.lines.Count - 1)
         {
             currentLineIndex++;
             ShowCurrentLine();
         }
         else
         {
-            CloseDialogue();
+            CloseConversation();
         }
     }
 
-    public void CloseDialogue()
+    public void CloseConversation()
     {
         if (typingCoroutine != null)
         {
@@ -312,11 +230,11 @@ public class DialogueManager : MonoBehaviour
             typingCoroutine = null;
         }
 
-        IsDialogueActive = false;
+        IsConversationActive = false;
 
-        if (dialoguePanel != null)
+        if (conversationPanel != null)
         {
-            dialoguePanel.SetActive(false);
+            conversationPanel.SetActive(false);
         }
 
         if (continuePrompt != null)
@@ -324,34 +242,13 @@ public class DialogueManager : MonoBehaviour
             continuePrompt.SetActive(false);
         }
 
-        currentLines = null;
+        currentConversation = null;
         currentLineIndex = 0;
-
         isTyping = false;
         skipTyping = false;
-    }
 
-    private CharacterVoice GetSceneVoice(string speakerName)
-    {
-        if (string.IsNullOrEmpty(speakerName))
-            return null;
-
-        if (registeredVoices.TryGetValue(speakerName, out var registered) && registered != null)
-        {
-            return registered;
-        }
-
-        CharacterVoice[] allVoices = FindObjectsByType<CharacterVoice>();
-        foreach (var v in allVoices)
-        {
-            if (v != null && string.Equals(v.CharacterName, speakerName, StringComparison.OrdinalIgnoreCase))
-            {
-                registeredVoices[speakerName] = v;
-                return v;
-            }
-        }
-
-        return null;
+        onConversationComplete?.Invoke();
+        onConversationComplete = null;
     }
 
     private void OnDestroy()
@@ -362,3 +259,4 @@ public class DialogueManager : MonoBehaviour
         }
     }
 }
+

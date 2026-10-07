@@ -1,11 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(
-    fileName = "NewDialogue",
-    menuName = "Dialogue/Dialogue Data"
-)]
-public class DialogueData : ScriptableObject
+[CreateAssetMenu(fileName = "NewDialogue", menuName = "Dialogue/Dialogue Data")]
+public class DialogueData : InteractionDialogue
 {
-    public List<DialogueLine> lines = new();
 }

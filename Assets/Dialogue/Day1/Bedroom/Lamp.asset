@@ -9,10 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13960142723afc84491937b34fb3fd7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 754c7d2814641e34aa9dd31ebe44b889, type: 3}
   m_Name: Lamp
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
-  lines:
-  - speaker: Sol
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionDialogue
+  firstTimeLines: []
+  repeatableLines:
+  - speakerProfile: {fileID: 0}
+    speaker: Sol
     text: My Lamp!
     textSpeed: 30
+    voiceOverride: {fileID: 0}
+    pitchOverride: 0

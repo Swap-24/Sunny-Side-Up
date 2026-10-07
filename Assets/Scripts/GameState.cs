@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameState : MonoBehaviour
@@ -23,12 +25,14 @@ public class GameState : MonoBehaviour
         }
     }
 
-    public bool HasReadJournal { get; private set; }
+    public bool HasReadJournal => HasFlag("ReadJournal");
     public string TargetSpawnPoint { get; private set; }
+
+    private readonly HashSet<string> flags = new(StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> interactedObjectIDs = new(StringComparer.OrdinalIgnoreCase);
 
     private void Awake()
     {
-        // Make sure there is only one GameState
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -36,8 +40,6 @@ public class GameState : MonoBehaviour
         }
 
         instance = this;
-
-        // Keep GameState when changing scenes
         DontDestroyOnLoad(gameObject);
     }
 
@@ -49,10 +51,47 @@ public class GameState : MonoBehaviour
         }
     }
 
+    // ==========================================
+    // GENERIC GAME FLAGS (MODULAR QUEST & STORY)
+    // ==========================================
+
+    public bool HasFlag(string flagName)
+    {
+        return !string.IsNullOrEmpty(flagName) && flags.Contains(flagName);
+    }
+
+    public void SetFlag(string flagName, bool value = true)
+    {
+        if (string.IsNullOrEmpty(flagName))
+            return;
+
+        if (value)
+        {
+            flags.Add(flagName);
+        }
+        else
+        {
+            flags.Remove(flagName);
+        }
+    }
+
+    public void ClearFlag(string flagName)
+    {
+        if (!string.IsNullOrEmpty(flagName))
+        {
+            flags.Remove(flagName);
+        }
+    }
+
+    // Convenience wrapper for journal
     public void MarkJournalAsRead()
     {
-        HasReadJournal = true;
+        SetFlag("ReadJournal", true);
     }
+
+    // ==========================================
+    // SPAWN POINT POSITIONING
+    // ==========================================
 
     public void SetTargetSpawnPoint(string spawnPointID)
     {
@@ -64,7 +103,9 @@ public class GameState : MonoBehaviour
         TargetSpawnPoint = null;
     }
 
-    private readonly System.Collections.Generic.HashSet<string> interactedObjectIDs = new();
+    // ==========================================
+    // INTERACTION PERSISTENCE
+    // ==========================================
 
     public bool HasInteractedWith(string id)
     {

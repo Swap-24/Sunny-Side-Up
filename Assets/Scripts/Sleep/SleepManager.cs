@@ -8,7 +8,7 @@ public class SleepManager : MonoBehaviour
     [SerializeField] private bool canSleep = true;
 
     [Header("Dialogue")]
-    [SerializeField] private DialogueData notSleepyDialogue;
+    [SerializeField] private InteractionDialogue notSleepyDialogue;
 
     public bool IsSleeping { get; private set; }
 

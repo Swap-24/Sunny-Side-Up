@@ -8,14 +8,18 @@ public class RoomExit : MonoBehaviour, IPlayerTrigger
     [SerializeField] private string destinationScene;
     [SerializeField] private string destinationSpawnPoint;
 
-    [Header("Requirements")]
-    [SerializeField] private bool requiresJournal;
+    [Header("Blockage / Quest Requirement (Optional)")]
+    [Tooltip("Flag required in GameState to pass through this exit (e.g. 'ReadJournal', 'TalkedToDad'). Leave empty if unblocked.")]
+    [SerializeField] private string requiredFlag = "ReadJournal";
 
-    [Header("Blocked Dialogue")]
-    [SerializeField] private DialogueData blockedDialogue;
+    [Tooltip("Dialogue played when the exit is blocked.")]
+    [SerializeField] private InteractionDialogue blockedDialogue;
 
     [Header("Transition Settings")]
     [SerializeField] private float fadeDuration = 1f;
+
+    // Legacy support for older scene instances
+    [SerializeField, HideInInspector] private bool requiresJournal = false;
 
     private bool isTransitioning = false;
 
@@ -24,7 +28,7 @@ public class RoomExit : MonoBehaviour, IPlayerTrigger
         if (isTransitioning)
             return;
 
-        if (requiresJournal && (GameState.Instance == null || !GameState.Instance.HasReadJournal))
+        if (IsBlocked())
         {
             if (DialogueManager.Instance != null && blockedDialogue != null)
             {
@@ -34,6 +38,26 @@ public class RoomExit : MonoBehaviour, IPlayerTrigger
         }
 
         StartCoroutine(TransitionRoutine());
+    }
+
+    private bool IsBlocked()
+    {
+        // Check if legacy requiresJournal is checked
+        if (requiresJournal && (GameState.Instance == null || !GameState.Instance.HasFlag("ReadJournal")))
+        {
+            return true;
+        }
+
+        // Check modular flag
+        if (!string.IsNullOrEmpty(requiredFlag))
+        {
+            if (GameState.Instance == null || !GameState.Instance.HasFlag(requiredFlag))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private IEnumerator TransitionRoutine()

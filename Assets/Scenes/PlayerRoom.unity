@@ -6233,6 +6233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 840189420}
   - component: {fileID: 840189421}
+  - component: {fileID: 840189422}
   m_Layer: 0
   m_Name: Dialoguemanager
   m_TagString: Untagged
@@ -6271,6 +6272,26 @@ MonoBehaviour:
   speakerText: {fileID: 847336494}
   dialogueText: {fileID: 566769404}
   audioSource: {fileID: 0}
+--- !u!114 &840189422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840189419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1734e42804829248a53e5db0e028e53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConversationManager
+  conversationPanel: {fileID: 255488900}
+  speakerText: {fileID: 847336494}
+  dialogueText: {fileID: 566769404}
+  continuePrompt: {fileID: 0}
+  audioSource: {fileID: 0}
+  commaPause: 0.12
+  endSentencePause: 0.28
+  ellipsisPause: 0.45
 --- !u!1 &847336492
 GameObject:
   m_ObjectHideFlags: 0
@@ -6653,7 +6674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
-  interactionDialogue: {fileID: 11400000, guid: 24ce4caf5c68e524c8a79575bbe5270b, type: 2}
+  dialogue: {fileID: 11400000, guid: 24ce4caf5c68e524c8a79575bbe5270b, type: 2}
   specialFirstDialogue: 0
   specialDialogue: {fileID: 0}
   interactionPrompt: '[E] - Inspect'
@@ -6856,7 +6877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
-  interactionDialogue: {fileID: 11400000, guid: 3a11d49427309d54281ce73b98654290, type: 2}
+  dialogue: {fileID: 11400000, guid: 3a11d49427309d54281ce73b98654290, type: 2}
   specialFirstDialogue: 0
   specialDialogue: {fileID: 0}
   interactionPrompt: '[E] - Inspect'
@@ -7498,7 +7519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
-  interactionDialogue: {fileID: 11400000, guid: 8c969acabd0bce941ab255cf9a6a242a, type: 2}
+  dialogue: {fileID: 11400000, guid: 8c969acabd0bce941ab255cf9a6a242a, type: 2}
   specialFirstDialogue: 0
   specialDialogue: {fileID: 0}
   interactionPrompt: '[E] - Inspect'
@@ -8314,7 +8335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
-  interactionDialogue: {fileID: 11400000, guid: 38e3032c544e5cd49be800470243dd4a, type: 2}
+  dialogue: {fileID: 11400000, guid: 38e3032c544e5cd49be800470243dd4a, type: 2}
   specialFirstDialogue: 1
   specialDialogue: {fileID: 11400000, guid: 11cc4f4c181f45e49a565624ce49e062, type: 2}
   interactionPrompt: '[E] - Inspect'
@@ -10604,7 +10625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e5e072341784f46af8c6e6b3613cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
-  interactionDialogue: {fileID: 11400000, guid: 7a778c8df86c2054681b911d402d0772, type: 2}
+  dialogue: {fileID: 11400000, guid: 7a778c8df86c2054681b911d402d0772, type: 2}
   specialFirstDialogue: 1
   specialDialogue: {fileID: 11400000, guid: ee25f403da4f32343b2225208f2b06a5, type: 2}
   interactionPrompt: '[E] - Inspect'

@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class DialogueLine
+public class ConversationLine
 {
-    [Tooltip("Speaker profile asset (provides speaker name, nameplate color, and voice sound).")]
+    [Tooltip("Speaker profile (controls name, nameplate color, and voice blip).")]
     [SerializeField] private SpeakerProfile speakerProfile;
 
     [Tooltip("Fallback speaker name (used if Speaker Profile is not assigned).")]
@@ -13,13 +13,13 @@ public class DialogueLine
     [Tooltip("The dialogue text to display.")]
     public string text;
 
-    [Tooltip("Characters typed per second. (0 = use profile speed, default ~35).")]
+    [Tooltip("Characters typed per second (0 = use profile default, ~35).")]
     public float textSpeed = 0f;
 
-    [Tooltip("Optional voice clip override for this specific line (e.g. scream, whisper, chuckle).")]
+    [Tooltip("Override voice sound clip for this line (e.g. scream, giggle, gasp).")]
     [SerializeField] private AudioClip voiceOverride;
 
-    [Tooltip("Optional pitch override for this specific line (0 = use profile default).")]
+    [Tooltip("Override pitch for this specific line (0 = use profile default).")]
     [SerializeField] private float pitchOverride = 0f;
 
     // Helper Properties
@@ -31,9 +31,7 @@ public class DialogueLine
         {
             if (speakerProfile != null && !string.IsNullOrEmpty(speakerProfile.SpeakerName))
                 return speakerProfile.SpeakerName;
-            if (!string.IsNullOrEmpty(speaker))
-                return speaker;
-            return "Sol";
+            return speaker;
         }
     }
 
@@ -103,3 +101,4 @@ public class DialogueLine
         }
     }
 }
+

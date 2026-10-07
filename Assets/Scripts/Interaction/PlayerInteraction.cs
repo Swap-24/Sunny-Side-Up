@@ -30,8 +30,14 @@ public class PlayerInteraction : MonoBehaviour
             return;
 
         // =========================
-        // DIALOGUE
+        // DIALOGUE & CONVERSATION
         // =========================
+
+        if (ConversationManager.Instance != null && ConversationManager.Instance.IsConversationActive)
+        {
+            ConversationManager.Instance.HandleInput();
+            return;
+        }
 
         if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive)
         {
